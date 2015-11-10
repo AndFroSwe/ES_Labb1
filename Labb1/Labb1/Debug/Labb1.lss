@@ -23,27 +23,27 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   9 .comment      00000030  00000000  00000000  0000300c  2**0
                   CONTENTS, READONLY
- 10 .debug_aranges 00000218  00000000  00000000  00003040  2**3
+ 10 .debug_aranges 00000220  00000000  00000000  00003040  2**3
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_pubnames 00000420  00000000  00000000  00003258  2**0
+ 11 .debug_pubnames 0000042a  00000000  00000000  00003260  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_info   00001901  00000000  00000000  00003678  2**0
+ 12 .debug_info   0000192d  00000000  00000000  0000368a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_abbrev 000006da  00000000  00000000  00004f79  2**0
+ 13 .debug_abbrev 000006da  00000000  00000000  00004fb7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   000021ea  00000000  00000000  00005653  2**0
+ 14 .debug_line   0000220d  00000000  00000000  00005691  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  0000036c  00000000  00000000  00007840  2**2
+ 15 .debug_frame  00000394  00000000  00000000  000078a0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_str    00000988  00000000  00000000  00007bac  2**0
+ 16 .debug_str    0000098e  00000000  00000000  00007c34  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_loc    00000563  00000000  00000000  00008534  2**0
+ 17 .debug_loc    00000582  00000000  00000000  000085c2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_macinfo 003ae7de  00000000  00000000  00008a97  2**0
+ 18 .debug_macinfo 003ae7de  00000000  00000000  00008b44  2**0
                   CONTENTS, READONLY, DEBUGGING
  19 .stack        00001000  0000f000  0000f000  00000000  2**0
                   ALLOC
- 20 .debug_ranges 000001c8  00000000  00000000  003b7278  2**3
+ 20 .debug_ranges 000001d0  00000000  00000000  003b7328  2**3
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .reset:
@@ -489,43 +489,46 @@ void closeLED (int port, int bit)
 }
 800023ee:	5e fc       	retal	r12
 
-800023f0 <part3>:
+800023f0 <part4>:
 	}
 	
 }
 
-void part3()
+void part4()
 {
 800023f0:	eb cd 40 f8 	pushm	r3-r7,lr
+//Change state of led with interupt
 	// Interrupt initiation
 	INTC_init_interrupts();
-800023f4:	f0 1f 00 19 	mcall	80002458 <part3+0x68>
+800023f4:	f0 1f 00 19 	mcall	80002458 <part4+0x68>
 	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
 800023f8:	30 0a       	mov	r10,0
 800023fa:	34 bb       	mov	r11,75
-800023fc:	49 8c       	lddpc	r12,8000245c <part3+0x6c>
-800023fe:	f0 1f 00 19 	mcall	80002460 <part3+0x70>
+800023fc:	49 8c       	lddpc	r12,8000245c <part4+0x6c>
+800023fe:	f0 1f 00 19 	mcall	80002460 <part4+0x70>
 	// Set response time for switch
 	gpio_enable_pin_glitch_filter(switch1);
 80002402:	35 8c       	mov	r12,88
-80002404:	f0 1f 00 18 	mcall	80002464 <part3+0x74>
+80002404:	f0 1f 00 18 	mcall	80002464 <part4+0x74>
 	// Enable a pin and define type
-	gpio_enable_pin_interrupt(switch1, GPIO_FALLING_EDGE);
-80002408:	30 2b       	mov	r11,2
+	gpio_enable_pin_interrupt(switch1, GPIO_RISING_EDGE);
+80002408:	30 1b       	mov	r11,1
 8000240a:	35 8c       	mov	r12,88
-8000240c:	f0 1f 00 17 	mcall	80002468 <part3+0x78>
+8000240c:	f0 1f 00 17 	mcall	80002468 <part4+0x78>
 	// Enable global interrupts
 	Enable_global_interrupt();
 80002410:	d5 03       	csrf	0x10
+
+	// Initial state
 	vol_state = 1;
 80002412:	30 19       	mov	r9,1
-80002414:	49 68       	lddpc	r8,8000246c <part3+0x7c>
+80002414:	49 68       	lddpc	r8,8000246c <part4+0x7c>
 80002416:	91 09       	st.w	r8[0x0],r9
 	while(1)
 	{
 		int i=(AVR32_GPIO.port[2].pvr >> 24) & 0x01;
 80002418:	fe 76 10 00 	mov	r6,-61440
-		// Initial state		
+		
 
 		if (vol_state == 1)
 8000241c:	10 97       	mov	r7,r8
@@ -535,44 +538,44 @@ void part3()
 80002420:	12 95       	mov	r5,r9
 			closeLED(1, 19);
 80002422:	31 33       	mov	r3,19
-	// Enable global interrupts
-	Enable_global_interrupt();
+
+	// Initial state
 	vol_state = 1;
 	while(1)
 	{
 		int i=(AVR32_GPIO.port[2].pvr >> 24) & 0x01;
 80002424:	ec f8 02 60 	ld.w	r8,r6[608]
-		// Initial state		
+		
 
 		if (vol_state == 1)
 80002428:	6e 08       	ld.w	r8,r7[0x0]
 8000242a:	58 18       	cp.w	r8,1
-8000242c:	c0 a1       	brne	80002440 <part3+0x50>
+8000242c:	c0 a1       	brne	80002440 <part4+0x50>
 		{
 			lightLED(1, 20);
 8000242e:	08 9b       	mov	r11,r4
 80002430:	0a 9c       	mov	r12,r5
-80002432:	f0 1f 00 10 	mcall	80002470 <part3+0x80>
+80002432:	f0 1f 00 10 	mcall	80002470 <part4+0x80>
 			closeLED(1, 19);
 80002436:	06 9b       	mov	r11,r3
 80002438:	0a 9c       	mov	r12,r5
-8000243a:	f0 1f 00 0f 	mcall	80002474 <part3+0x84>
-8000243e:	cf 3b       	rjmp	80002424 <part3+0x34>
+8000243a:	f0 1f 00 0f 	mcall	80002474 <part4+0x84>
+8000243e:	cf 3b       	rjmp	80002424 <part4+0x34>
 		}
 		else if (vol_state == 2)
 80002440:	6e 08       	ld.w	r8,r7[0x0]
 80002442:	58 28       	cp.w	r8,2
-80002444:	cf 01       	brne	80002424 <part3+0x34>
+80002444:	cf 01       	brne	80002424 <part4+0x34>
 		{
 			lightLED(1, 19);
 80002446:	06 9b       	mov	r11,r3
 80002448:	0a 9c       	mov	r12,r5
-8000244a:	f0 1f 00 0a 	mcall	80002470 <part3+0x80>
+8000244a:	f0 1f 00 0a 	mcall	80002470 <part4+0x80>
 			closeLED(1, 20);
 8000244e:	08 9b       	mov	r11,r4
 80002450:	0a 9c       	mov	r12,r5
-80002452:	f0 1f 00 09 	mcall	80002474 <part3+0x84>
-80002456:	ce 7b       	rjmp	80002424 <part3+0x34>
+80002452:	f0 1f 00 09 	mcall	80002474 <part4+0x84>
+80002456:	ce 7b       	rjmp	80002424 <part4+0x34>
 80002458:	80 00       	ld.sh	r0,r0[0x0]
 8000245a:	23 08       	sub	r8,48
 8000245c:	80 00       	ld.sh	r0,r0[0x0]
@@ -591,8 +594,8 @@ void part3()
 80002476:	23 e0       	sub	r0,62
 
 80002478 <main>:
-	
 }
+
 
 
 int main ()
@@ -602,8 +605,10 @@ int main ()
 8000247a:	f0 1f 00 03 	mcall	80002484 <main+0xc>
 	//part1();
 	//part2();
-	part3();
+	//part3();
+	part4();
 8000247e:	f0 1f 00 03 	mcall	80002488 <main+0x10>
+
 	return 0;
 
 }

@@ -68,6 +68,7 @@ void part2()
 
 void part3()
 {
+//Change state of led with interupt
 	// Interrupt initiation
 	INTC_init_interrupts();
 	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
@@ -100,13 +101,51 @@ void part3()
 	
 }
 
+void part4()
+{
+//Change state of led with interupt
+	// Interrupt initiation
+	INTC_init_interrupts();
+	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
+	// Set response time for switch
+	gpio_enable_pin_glitch_filter(switch1);
+	// Enable a pin and define type
+	gpio_enable_pin_interrupt(switch1, GPIO_RISING_EDGE);
+	// Enable global interrupts
+	Enable_global_interrupt();
+
+	// Initial state
+	vol_state = 1;
+	while(1)
+	{
+		int i=(AVR32_GPIO.port[2].pvr >> 24) & 0x01;
+		
+
+		if (vol_state == 1)
+		{
+			lightLED(1, 20);
+			closeLED(1, 19);
+		}
+		else if (vol_state == 2)
+		{
+			lightLED(1, 19);
+			closeLED(1, 20);
+		}
+		
+	}
+	
+}
+
+
 
 int main ()
 {
 	board_init();
 	//part1();
 	//part2();
-	part3();
+	//part3();
+	part4();
+
 	return 0;
 
 }
