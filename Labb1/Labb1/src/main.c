@@ -83,9 +83,7 @@ void part3()
 	vol_state = 1;
 	while(1)
 	{
-		int i=(AVR32_GPIO.port[2].pvr >> 24) & 0x01;
 		
-
 		if (vol_state == 1)
 		{
 			lightLED(1, 20);
@@ -136,15 +134,15 @@ void part4()
 	
 }
 
+/*
 void part5()
 {
-	/* Joystick pins:
+	Joystick pins:
 	Left: PA25=GPIO25
 	Up: PA26=GPIO26
 	Right: PA27=GPIO27
 	Down: PA28=GPIO28
 	Button: PA20=GPIO20
-	*/
 	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
 	while(1)
 	{
@@ -184,6 +182,38 @@ void part5()
 	}
 }
 
+*/
+
+void part5()
+{
+	int buttons = (1<<24)|(1<<21)|(1<<18);
+	int cool = (1<<24)|(1<<18);
+	int i = 0;
+	while(1)
+	{
+		// Read akk buttons
+		i = ~AVR32_GPIO.port[2].pvr & buttons;
+		
+		
+		if(i == cool)
+		{
+			lightLED(1, 22);
+		}
+		else if (i==0)
+		{
+			closeLED(1, 22);
+		}
+	}
+}
+
+void part6()
+{
+	int LEDs = (1<<19)|(1<<20)|(1<<21)|(1<<22)|(1<<27)|(1<<28)|(1<<29)|(1<<30);
+	
+	// Light all leds
+	AVR32_GPIO.port[1].ovrc = LEDs;	
+}
+
 
 
 int main ()
@@ -197,9 +227,10 @@ int main ()
 	//part3();
 	// Change color on release
 	//part4();
-	// Light with joystick
-	part5();
-	
+	//Read all buttons
+	//part5();
+	// Light all LEDs
+	part6();
 
 	return 0;
 

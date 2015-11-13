@@ -5,11 +5,11 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .reset        00002008  80000000  80000000  00000400  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .text         000003b0  80002008  80002008  00002408  2**2
+  1 .text         000002a4  80002008  80002008  00002408  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .exception    00000200  80002400  80002400  00002800  2**9
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  3 .rodata       00000150  80002600  80002600  00002a00  2**2
+  3 .rodata       00000110  80002600  80002600  00002a00  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   4 .dalign       00000004  00000004  00000004  00000000  2**0
                   ALLOC
@@ -17,29 +17,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   6 .heap         0000ef08  000000f8  000000f8  00000000  2**0
                   ALLOC
-  7 .comment      00000030  00000000  00000000  00002b50  2**0
+  7 .comment      00000030  00000000  00000000  00002b10  2**0
                   CONTENTS, READONLY
-  8 .debug_aranges 00000228  00000000  00000000  00002b80  2**3
+  8 .debug_aranges 00000230  00000000  00000000  00002b40  2**3
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_pubnames 00000434  00000000  00000000  00002da8  2**0
+  9 .debug_pubnames 0000043e  00000000  00000000  00002d70  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_info   000019a5  00000000  00000000  000031dc  2**0
+ 10 .debug_info   00001970  00000000  00000000  000031ae  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_abbrev 000006e7  00000000  00000000  00004b81  2**0
+ 11 .debug_abbrev 0000070f  00000000  00000000  00004b1e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   00002241  00000000  00000000  00005268  2**0
+ 12 .debug_line   00002234  00000000  00000000  0000522d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_frame  000003c8  00000000  00000000  000074ac  2**2
+ 13 .debug_frame  000003c0  00000000  00000000  00007464  2**2
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    000009ab  00000000  00000000  00007874  2**0
+ 14 .debug_str    000009ac  00000000  00000000  00007824  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_loc    000005ae  00000000  00000000  0000821f  2**0
+ 15 .debug_loc    000005ca  00000000  00000000  000081d0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_macinfo 003ae7de  00000000  00000000  000087cd  2**0
+ 16 .debug_macinfo 003ae7de  00000000  00000000  0000879a  2**0
                   CONTENTS, READONLY, DEBUGGING
  17 .stack        00001000  0000f000  0000f000  00000000  2**0
                   ALLOC
- 18 .debug_ranges 000001d8  00000000  00000000  003b6fb0  2**3
+ 18 .debug_ranges 000001e0  00000000  00000000  003b6f78  2**3
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .reset:
@@ -468,7 +468,7 @@ void gpio_configure_pin(uint32_t pin, uint32_t flags)
 8000225c:	30 81       	mov	r1,8
 8000225e:	02 30       	cp.w	r0,r1
 80002260:	c0 72       	brcc	8000226e <idata_load_loop_end>
-80002262:	fe c2 fb 12 	sub	r2,pc,-1262
+80002262:	fe c2 fb 52 	sub	r2,pc,-1198
 
 80002266 <idata_load_loop>:
 80002266:	a5 05       	ld.d	r4,r2++
@@ -490,275 +490,48 @@ void gpio_configure_pin(uint32_t pin, uint32_t flags)
 80002280:	cf e3       	brcs	8000227c <udata_clear_loop>
 
 80002282 <udata_clear_loop_end>:
-80002282:	fe cf fe de 	sub	pc,pc,-290
+80002282:	fe cf ff ea 	sub	pc,pc,-22
 80002286:	d7 03       	nop
 
-80002288 <lightLED>:
-	AVR32_GPIO.port[port].oders = 1 << bit;
-}
-
-void lightLED (int port, int bit)
+80002288 <part6>:
+void part6()
 {
-	AVR32_GPIO.port[port].ovrc = 1 << bit;
-80002288:	30 18       	mov	r8,1
-8000228a:	f0 0b 09 48 	lsl	r8,r8,r11
-8000228e:	a9 6c       	lsl	r12,0x8
-80002290:	e0 2c ef a8 	sub	r12,61352
-80002294:	99 08       	st.w	r12[0x0],r8
-}
-80002296:	5e fc       	retal	r12
-
-80002298 <closeLED>:
-
-void closeLED (int port, int bit)
-{
-	AVR32_GPIO.port[port].ovrs = 1 << bit;
-80002298:	30 18       	mov	r8,1
-8000229a:	f0 0b 09 48 	lsl	r8,r8,r11
-8000229e:	a9 6c       	lsl	r12,0x8
-800022a0:	e0 2c ef ac 	sub	r12,61356
-800022a4:	99 08       	st.w	r12[0x0],r8
-}
-800022a6:	5e fc       	retal	r12
-
-800022a8 <part1>:
-
-void part1 ()
-{
-800022a8:	eb cd 40 e0 	pushm	r5-r7,lr
-800022ac:	20 8d       	sub	sp,32
-	// Light all leds
-	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
-800022ae:	49 08       	lddpc	r8,800022ec <part1+0x44>
-800022b0:	1a 96       	mov	r6,sp
-800022b2:	f0 ea 00 00 	ld.d	r10,r8[0]
-800022b6:	fa eb 00 00 	st.d	sp[0],r10
-800022ba:	f0 ea 00 08 	ld.d	r10,r8[8]
-800022be:	fa eb 00 08 	st.d	sp[8],r10
-800022c2:	f0 ea 00 10 	ld.d	r10,r8[16]
-800022c6:	fa eb 00 10 	st.d	sp[16],r10
-800022ca:	f0 e8 00 18 	ld.d	r8,r8[24]
-800022ce:	fa e9 00 18 	st.d	sp[24],r8
-void closeLED (int port, int bit)
-{
-	AVR32_GPIO.port[port].ovrs = 1 << bit;
-}
-
-void part1 ()
-800022d2:	fa c7 ff e0 	sub	r7,sp,-32
-{
-	// Light all leds
-	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
-	for(int i=0; i<8; ++i)
-	{
-		lightLED(1, light[i]);
-800022d6:	30 15       	mov	r5,1
-800022d8:	0d 0b       	ld.w	r11,r6++
-800022da:	0a 9c       	mov	r12,r5
-800022dc:	f0 1f 00 05 	mcall	800022f0 <part1+0x48>
-
-void part1 ()
-{
-	// Light all leds
-	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
-	for(int i=0; i<8; ++i)
-800022e0:	0e 36       	cp.w	r6,r7
-800022e2:	cf b1       	brne	800022d8 <part1+0x30>
-	{
-		lightLED(1, light[i]);
-	}
-}
-800022e4:	2f 8d       	sub	sp,-32
-800022e6:	e3 cd 80 e0 	ldm	sp++,r5-r7,pc
-800022ea:	00 00       	add	r0,r0
-800022ec:	80 00       	ld.sh	r0,r0[0x0]
-800022ee:	27 10       	sub	r0,113
-800022f0:	80 00       	ld.sh	r0,r0[0x0]
-800022f2:	22 88       	sub	r8,40
-
-800022f4 <part5>:
-	}
+	int LEDs = (1<<19)|(1<<20)|(1<<21)|(1<<22)|(1<<27)|(1<<28)|(1<<29)|(1<<30);
 	
+	// Light all leds
+	AVR32_GPIO.port[1].ovrc = LEDs;	
+80002288:	fc 19 78 78 	movh	r9,0x7878
+8000228c:	fe 78 10 00 	mov	r8,-61440
+80002290:	f1 49 01 58 	st.w	r8[344],r9
 }
+80002294:	5e fc       	retal	r12
+80002296:	d7 03       	nop
 
-void part5()
-{
-800022f4:	d4 31       	pushm	r0-r7,lr
-800022f6:	20 8d       	sub	sp,32
-	Up: PA26=GPIO26
-	Right: PA27=GPIO27
-	Down: PA28=GPIO28
-	Button: PA20=GPIO20
-	*/
-	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
-800022f8:	4a 79       	lddpc	r9,80002394 <part5+0xa0>
-800022fa:	f2 ea 00 00 	ld.d	r10,r9[0]
-800022fe:	fa eb 00 00 	st.d	sp[0],r10
-80002302:	f2 ea 00 08 	ld.d	r10,r9[8]
-80002306:	fa eb 00 08 	st.d	sp[8],r10
-8000230a:	f2 ea 00 10 	ld.d	r10,r9[16]
-8000230e:	fa eb 00 10 	st.d	sp[16],r10
-80002312:	f2 ea 00 18 	ld.d	r10,r9[24]
-80002316:	fa eb 00 18 	st.d	sp[24],r10
-	while(1)
-	{
-		int up = (AVR32_GPIO.port[0].pvr >> 26) & 0x01;
-8000231a:	fe 77 10 00 	mov	r7,-61440
-		int left = (AVR32_GPIO.port[0].pvr >> 25) & 0x01;
-		int button = (AVR32_GPIO.port[0].pvr >> 20) & 0x01;
-		
-		if (up == 0)
-		{
-			lightLED(1, 27);
-8000231e:	31 b3       	mov	r3,27
-80002320:	30 15       	mov	r5,1
-		{
-			lightLED(1, 30);
-		}
-		else if (button == 0)
-		{
-			part1();
-80002322:	1a 91       	mov	r1,sp
-		
-	}
-	
-}
-
-void part5()
-80002324:	fa c4 ff e0 	sub	r4,sp,-32
-		{
-			lightLED(1, 28);
-		}
-		else if (down == 0)
-		{
-			lightLED(1, 29);
-80002328:	31 d0       	mov	r0,29
-		{
-			lightLED(1, 27);
-		}
-		else if (right == 0)
-		{
-			lightLED(1, 28);
-8000232a:	31 c2       	mov	r2,28
-	Button: PA20=GPIO20
-	*/
-	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
-	while(1)
-	{
-		int up = (AVR32_GPIO.port[0].pvr >> 26) & 0x01;
-8000232c:	6f 88       	ld.w	r8,r7[0x60]
-		int right = (AVR32_GPIO.port[0].pvr >> 27) & 0x01;
-8000232e:	6f 89       	ld.w	r9,r7[0x60]
-		int down = (AVR32_GPIO.port[0].pvr >> 28) & 0x01;
-80002330:	6f 8a       	ld.w	r10,r7[0x60]
-		int left = (AVR32_GPIO.port[0].pvr >> 25) & 0x01;
-80002332:	6f 8b       	ld.w	r11,r7[0x60]
-		int button = (AVR32_GPIO.port[0].pvr >> 20) & 0x01;
-80002334:	6f 8c       	ld.w	r12,r7[0x60]
-		
-		if (up == 0)
-80002336:	e6 18 04 00 	andh	r8,0x400,COH
-8000233a:	c0 61       	brne	80002346 <part5+0x52>
-		{
-			lightLED(1, 27);
-8000233c:	06 9b       	mov	r11,r3
-8000233e:	0a 9c       	mov	r12,r5
-80002340:	f0 1f 00 16 	mcall	80002398 <part5+0xa4>
-80002344:	cf 4b       	rjmp	8000232c <part5+0x38>
-		}
-		else if (right == 0)
-80002346:	e6 19 08 00 	andh	r9,0x800,COH
-8000234a:	c0 61       	brne	80002356 <part5+0x62>
-		{
-			lightLED(1, 28);
-8000234c:	04 9b       	mov	r11,r2
-8000234e:	0a 9c       	mov	r12,r5
-80002350:	f0 1f 00 12 	mcall	80002398 <part5+0xa4>
-80002354:	ce cb       	rjmp	8000232c <part5+0x38>
-		}
-		else if (down == 0)
-80002356:	e6 1a 10 00 	andh	r10,0x1000,COH
-8000235a:	c0 61       	brne	80002366 <part5+0x72>
-		{
-			lightLED(1, 29);
-8000235c:	00 9b       	mov	r11,r0
-8000235e:	0a 9c       	mov	r12,r5
-80002360:	f0 1f 00 0e 	mcall	80002398 <part5+0xa4>
-80002364:	ce 4b       	rjmp	8000232c <part5+0x38>
-		}
-		else if (left == 0)
-80002366:	e6 1b 02 00 	andh	r11,0x200,COH
-8000236a:	c0 61       	brne	80002376 <part5+0x82>
-		{
-			lightLED(1, 30);
-8000236c:	31 eb       	mov	r11,30
-8000236e:	0a 9c       	mov	r12,r5
-80002370:	f0 1f 00 0a 	mcall	80002398 <part5+0xa4>
-80002374:	cd cb       	rjmp	8000232c <part5+0x38>
-		}
-		else if (button == 0)
-80002376:	e6 1c 00 10 	andh	r12,0x10,COH
-8000237a:	c0 41       	brne	80002382 <part5+0x8e>
-		{
-			part1();
-8000237c:	f0 1f 00 08 	mcall	8000239c <part5+0xa8>
-80002380:	cd 6b       	rjmp	8000232c <part5+0x38>
-80002382:	02 96       	mov	r6,r1
-		}
-		else
-		{	
-			for(int i=0; i<8; ++i)
-			{
-				closeLED(1, light[i]);
-80002384:	0d 0b       	ld.w	r11,r6++
-80002386:	0a 9c       	mov	r12,r5
-80002388:	f0 1f 00 06 	mcall	800023a0 <part5+0xac>
-		{
-			part1();
-		}
-		else
-		{	
-			for(int i=0; i<8; ++i)
-8000238c:	08 36       	cp.w	r6,r4
-8000238e:	cf b1       	brne	80002384 <part5+0x90>
-80002390:	cc eb       	rjmp	8000232c <part5+0x38>
-80002392:	00 00       	add	r0,r0
-80002394:	80 00       	ld.sh	r0,r0[0x0]
-80002396:	27 30       	sub	r0,115
-80002398:	80 00       	ld.sh	r0,r0[0x0]
-8000239a:	22 88       	sub	r8,40
-8000239c:	80 00       	ld.sh	r0,r0[0x0]
-8000239e:	22 a8       	sub	r8,42
-800023a0:	80 00       	ld.sh	r0,r0[0x0]
-800023a2:	22 98       	sub	r8,41
-
-800023a4 <main>:
-}
+80002298 <main>:
 
 
 
 int main ()
 {
-800023a4:	d4 01       	pushm	lr
+80002298:	d4 01       	pushm	lr
 	board_init();
-800023a6:	f0 1f 00 03 	mcall	800023b0 <main+0xc>
-	// Change color
+8000229a:	f0 1f 00 03 	mcall	800022a4 <main+0xc>
 	//part3();
 	// Change color on release
 	//part4();
-	// Light with joystick
-	part5();
-800023aa:	f0 1f 00 03 	mcall	800023b4 <main+0x10>
-	
+	//Read all buttons
+	//part5();
+	part6();
+8000229e:	f0 1f 00 03 	mcall	800022a8 <main+0x10>
 
 	return 0;
 
 }
-800023ae:	d8 0a       	popm	pc,r12=0
-800023b0:	80 00       	ld.sh	r0,r0[0x0]
-800023b2:	20 08       	sub	r8,0
-800023b4:	80 00       	ld.sh	r0,r0[0x0]
-800023b6:	22 f4       	sub	r4,47
+800022a2:	d8 0a       	popm	pc,r12=0
+800022a4:	80 00       	ld.sh	r0,r0[0x0]
+800022a6:	20 08       	sub	r8,0
+800022a8:	80 00       	ld.sh	r0,r0[0x0]
+800022aa:	22 88       	sub	r8,40
 
 Disassembly of section .exception:
 

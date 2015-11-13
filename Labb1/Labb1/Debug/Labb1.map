@@ -124,13 +124,21 @@ Discarded input sections
  .data          0x00000000        0x0 src/main.o
  .bss           0x00000000        0x0 src/main.o
  .text.initLED  0x00000000       0x1e src/main.o
+ .text.lightLED
+                0x00000000       0x10 src/main.o
+ .text.closeLED
+                0x00000000       0x10 src/main.o
+ .text.part1    0x00000000       0x4c src/main.o
  .text.part2    0x00000000       0x38 src/main.o
+ .text.part5    0x00000000       0x40 src/main.o
  .text.part4    0x00000000       0x88 src/main.o
- .text.part3    0x00000000       0x88 src/main.o
+ .text.part3    0x00000000       0x80 src/main.o
  .text.interrupt
                 0x00000000       0x34 src/main.o
  .data.vol_state
                 0x00000000        0x4 src/main.o
+ .rodata.C.49.10620
+                0x00000000       0x20 src/main.o
 
 Memory Configuration
 
@@ -277,7 +285,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
 .plt
  *(.plt)
 
-.text           0x80002008      0x3b0
+.text           0x80002008      0x2a4
  *(.text .stub .text.* .gnu.linkonce.t.*)
  .text.board_init
                 0x80002008       0xd0 src/ASF/avr32/boards/evk1100/init.o
@@ -298,18 +306,11 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .text._stext   0x8000224c       0x3c src/ASF/avr32/utils/startup/startup_uc3.o
                                  0x50 (size before relaxing)
                 0x8000224c                _stext
- .text.lightLED
-                0x80002288       0x10 src/main.o
-                0x80002288                lightLED
- .text.closeLED
-                0x80002298       0x10 src/main.o
-                0x80002298                closeLED
- .text.part1    0x800022a8       0x4c src/main.o
-                0x800022a8                part1
- .text.part5    0x800022f4       0xb0 src/main.o
-                0x800022f4                part5
- .text.main     0x800023a4       0x14 src/main.o
-                0x800023a4                main
+ .text.part6    0x80002288        0xe src/main.o
+                0x80002288                part6
+ *fill*         0x80002296        0x2 d703d703
+ .text.main     0x80002298       0x14 src/main.o
+                0x80002298                main
  *(.text.*personality*)
  *(.gnu.warning)
 
@@ -327,7 +328,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
                 0x80002600                PROVIDE (_etext, .)
                 0x80002600                PROVIDE (etext, .)
 
-.rodata         0x80002600      0x150
+.rodata         0x80002600      0x110
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.SD_MMC_SPI_GPIO_MAP.10564
                 0x80002600       0x20 src/ASF/avr32/boards/evk1100/init.o
@@ -341,10 +342,6 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
                 0x80002650       0x20 src/ASF/avr32/boards/evk1100/init.o
  .rodata._int_handler_table
                 0x80002670       0xa0 src/ASF/avr32/drivers/intc/intc.o
- .rodata.C.49.10620
-                0x80002710       0x20 src/main.o
- .rodata.C.55.10679
-                0x80002730       0x20 src/main.o
 
 .rodata1
  *(.rodata1)
@@ -359,9 +356,9 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  *(.gcc_except_table)
  *(.gcc_except_table.*)
 
-.lalign         0x80002750        0x0
-                0x80002750                . = ALIGN (0x8)
-                0x80002750                PROVIDE (_data_lma, .)
+.lalign         0x80002710        0x0
+                0x80002710                . = ALIGN (0x8)
+                0x80002710                PROVIDE (_data_lma, .)
                 0x00000004                . = ORIGIN (INTRAM)
 
 .dalign         0x00000004        0x4
@@ -427,7 +424,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
 .ramtext
  *(.ramtext .ramtext.*)
 
-.ddalign        0x00000008        0x0 load address 0x80002750
+.ddalign        0x00000008        0x0 load address 0x80002710
                 0x00000008                . = ALIGN (0x8)
 
 .data
@@ -437,7 +434,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
 .data1
  *(.data1)
 
-.balign         0x00000008        0x0 load address 0x80002750
+.balign         0x00000008        0x0 load address 0x80002710
                 0x00000008                . = ALIGN (0x8)
                 0x00000008                PROVIDE (_edata, .)
                 0x00000008                PROVIDE (edata, .)
@@ -538,7 +535,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x228
+.debug_aranges  0x00000000      0x230
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 src/ASF/avr32/boards/evk1100/init.o
@@ -553,10 +550,10 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .debug_aranges
                 0x000001a0       0x20 src/ASF/avr32/utils/startup/trampoline_uc3.o
  .debug_aranges
-                0x000001c0       0x68 src/main.o
+                0x000001c0       0x70 src/main.o
 
 .debug_pubnames
-                0x00000000      0x434
+                0x00000000      0x43e
  *(.debug_pubnames)
  .debug_pubnames
                 0x00000000       0x21 src/ASF/avr32/boards/evk1100/init.o
@@ -565,9 +562,9 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .debug_pubnames
                 0x00000351       0x62 src/ASF/avr32/drivers/intc/intc.o
  .debug_pubnames
-                0x000003b3       0x81 src/main.o
+                0x000003b3       0x8b src/main.o
 
-.debug_info     0x00000000     0x19a5
+.debug_info     0x00000000     0x1970
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x16b src/ASF/avr32/boards/evk1100/init.o
  .debug_info    0x0000016b      0xb1b src/ASF/avr32/drivers/gpio/gpio.o
@@ -575,9 +572,9 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .debug_info    0x00000d14      0x5b3 src/ASF/avr32/drivers/intc/intc.o
  .debug_info    0x000012c7       0x90 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_info    0x00001357       0x97 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_info    0x000013ee      0x5b7 src/main.o
+ .debug_info    0x000013ee      0x582 src/main.o
 
-.debug_abbrev   0x00000000      0x6e7
+.debug_abbrev   0x00000000      0x70f
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0xae src/ASF/avr32/boards/evk1100/init.o
  .debug_abbrev  0x000000ae      0x28b src/ASF/avr32/drivers/gpio/gpio.o
@@ -585,9 +582,9 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .debug_abbrev  0x0000034d      0x1f2 src/ASF/avr32/drivers/intc/intc.o
  .debug_abbrev  0x0000053f       0x12 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_abbrev  0x00000551       0x14 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_abbrev  0x00000565      0x182 src/main.o
+ .debug_abbrev  0x00000565      0x1aa src/main.o
 
-.debug_line     0x00000000     0x2241
+.debug_line     0x00000000     0x2234
  *(.debug_line)
  .debug_line    0x00000000      0x764 src/ASF/avr32/boards/evk1100/init.o
  .debug_line    0x00000764      0x93a src/ASF/avr32/drivers/gpio/gpio.o
@@ -595,16 +592,16 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .debug_line    0x000011a7      0x707 src/ASF/avr32/drivers/intc/intc.o
  .debug_line    0x000018ae       0xf2 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_line    0x000019a0       0x67 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_line    0x00001a07      0x83a src/main.o
+ .debug_line    0x00001a07      0x82d src/main.o
 
-.debug_frame    0x00000000      0x3c8
+.debug_frame    0x00000000      0x3c0
  *(.debug_frame)
  .debug_frame   0x00000000       0x28 src/ASF/avr32/boards/evk1100/init.o
  .debug_frame   0x00000028      0x204 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_frame   0x0000022c       0x64 src/ASF/avr32/drivers/intc/intc.o
- .debug_frame   0x00000290      0x138 src/main.o
+ .debug_frame   0x00000290      0x130 src/main.o
 
-.debug_str      0x00000000      0x9ab
+.debug_str      0x00000000      0x9ac
  *(.debug_str)
  .debug_str     0x00000000      0x148 src/ASF/avr32/boards/evk1100/init.o
                                 0x181 (size before relaxing)
@@ -612,15 +609,15 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
                                 0x52a (size before relaxing)
  .debug_str     0x00000577      0x3c2 src/ASF/avr32/drivers/intc/intc.o
                                 0x481 (size before relaxing)
- .debug_str     0x00000939       0x72 src/main.o
-                                0x27a (size before relaxing)
+ .debug_str     0x00000939       0x73 src/main.o
+                                0x27b (size before relaxing)
 
-.debug_loc      0x00000000      0x5ae
+.debug_loc      0x00000000      0x5ca
  *(.debug_loc)
  .debug_loc     0x00000000       0x1f src/ASF/avr32/boards/evk1100/init.o
  .debug_loc     0x0000001f      0x368 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_loc     0x00000387       0xd3 src/ASF/avr32/drivers/intc/intc.o
- .debug_loc     0x0000045a      0x154 src/main.o
+ .debug_loc     0x0000045a      0x170 src/main.o
 
 .debug_macinfo  0x00000000   0x3ae7de
  *(.debug_macinfo)
@@ -659,9 +656,9 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  *(.note.GNU-stack)
 OUTPUT(Labb1.elf elf32-avr32)
 
-.debug_ranges   0x00000000      0x1d8
+.debug_ranges   0x00000000      0x1e0
  .debug_ranges  0x00000000       0x18 src/ASF/avr32/boards/evk1100/init.o
  .debug_ranges  0x00000018       0xf8 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_ranges  0x00000110       0x48 src/ASF/avr32/drivers/intc/intc.o
  .debug_ranges  0x00000158       0x20 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_ranges  0x00000178       0x60 src/main.o
+ .debug_ranges  0x00000178       0x68 src/main.o
