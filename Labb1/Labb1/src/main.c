@@ -136,15 +136,70 @@ void part4()
 	
 }
 
+void part5()
+{
+	/* Joystick pins:
+	Left: PA25=GPIO25
+	Up: PA26=GPIO26
+	Right: PA27=GPIO27
+	Down: PA28=GPIO28
+	Button: PA20=GPIO20
+	*/
+	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
+	while(1)
+	{
+		int up = (AVR32_GPIO.port[0].pvr >> 26) & 0x01;
+		int right = (AVR32_GPIO.port[0].pvr >> 27) & 0x01;
+		int down = (AVR32_GPIO.port[0].pvr >> 28) & 0x01;
+		int left = (AVR32_GPIO.port[0].pvr >> 25) & 0x01;
+		int button = (AVR32_GPIO.port[0].pvr >> 20) & 0x01;
+		
+		if (up == 0)
+		{
+			lightLED(1, 27);
+		}
+		else if (right == 0)
+		{
+			lightLED(1, 28);
+		}
+		else if (down == 0)
+		{
+			lightLED(1, 29);
+		}
+		else if (left == 0)
+		{
+			lightLED(1, 30);
+		}
+		else if (button == 0)
+		{
+			part1();
+		}
+		else
+		{	
+			for(int i=0; i<8; ++i)
+			{
+				closeLED(1, light[i]);
+			}
+		}
+	}
+}
+
 
 
 int main ()
 {
 	board_init();
+	// Light all
 	//part1();
+	// Light one with button
 	//part2();
+	// Change color
 	//part3();
-	part4();
+	// Change color on release
+	//part4();
+	// Light with joystick
+	part5();
+	
 
 	return 0;
 
