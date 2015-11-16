@@ -6,6 +6,8 @@ src\ASF\avr32\boards\evk1100\init.c
 
 src\ASF\avr32\boards\evk1100\led.c
 
+src\ASF\avr32\drivers\adc\adc.c
+
 src\ASF\avr32\drivers\gpio\gpio.c
 
 src\ASF\avr32\drivers\intc\exception.S

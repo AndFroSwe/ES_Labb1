@@ -1,6 +1,169 @@
 #include <asf.h>
+#define switch1 88
 
-void part1()
+volatile int vol_state = 1;
+
+__attribute__((__interrupt__)) static void interrupt(void)
+{
+	if (vol_state == 1)
+	{
+		vol_state = 2;
+	}
+	else if (vol_state == 2)
+	{
+		vol_state = 1;
+	}
+	
+	gpio_clear_pin_interrupt_flag(switch1);
+}
+
+
+
+void initLED (int port, int bit)
+{
+	AVR32_GPIO.port[port].gpers = 1 << bit;
+	AVR32_GPIO.port[port].oders = 1 << bit;
+}
+
+void lightLED (int port, int bit)
+{
+	AVR32_GPIO.port[port].ovrc = 1 << bit;
+}
+
+void closeLED (int port, int bit)
+{
+	AVR32_GPIO.port[port].ovrs = 1 << bit;
+}
+
+void part11()
+{
+	// Light all leds
+	int light[] = {27, 28, 29, 30, 19, 20, 21, 22};
+	for(int i=0; i<8; ++i)
+	{
+		lightLED(1, light[i]);
+	}
+}
+
+void part12()
+{
+	// Turn off one when pressing a button
+	while(1)
+	{
+		int i=(AVR32_GPIO.port[2].pvr >> 24) & 0x01;
+		
+		if(i==1)
+		{
+			lightLED(1, 22);
+		}
+		else if (i==0)
+		{
+			closeLED(1, 22);
+		}
+	}
+	
+}
+
+void part13()
+{
+//Change state of led with interupt
+	// Interrupt initiation
+	INTC_init_interrupts();
+	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
+	// Set response time for switch
+	gpio_enable_pin_glitch_filter(switch1);
+	// Enable a pin and define type
+	gpio_enable_pin_interrupt(switch1, GPIO_FALLING_EDGE);
+	// Enable global interrupts
+	Enable_global_interrupt();
+
+	// Initial state
+	vol_state = 1;
+	while(1)
+	{
+		
+		if (vol_state == 1)
+		{
+			lightLED(1, 20);
+			closeLED(1, 19);
+		}
+		else if (vol_state == 2)
+		{
+			lightLED(1, 19);
+			closeLED(1, 20);
+		}
+		
+	}
+	
+}
+
+void part14()
+{
+//Change state of led with interupt
+	// Interrupt initiation
+	INTC_init_interrupts();
+	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
+	// Set response time for switch
+	gpio_enable_pin_glitch_filter(switch1);
+	// Enable a pin and define type
+	gpio_enable_pin_interrupt(switch1, GPIO_RISING_EDGE);
+	// Enable global interrupts
+	Enable_global_interrupt();
+
+	// Initial state
+	vol_state = 1;
+	while(1)
+	{
+		int i=(AVR32_GPIO.port[2].pvr >> 24) & 0x01;
+		
+
+		if (vol_state == 1)
+		{
+			lightLED(1, 20);
+			closeLED(1, 19);
+		}
+		else if (vol_state == 2)
+		{
+			lightLED(1, 19);
+			closeLED(1, 20);
+		}
+		
+	}
+	
+}
+
+
+void part15()
+{
+	int buttons = (1<<24)|(1<<21)|(1<<18);
+	int cool = (1<<24)|(1<<18);
+	int i = 0;
+	while(1)
+	{
+		// Read akk buttons
+		i = ~AVR32_GPIO.port[2].pvr & buttons;
+		
+		
+		if(i == cool)
+		{
+			lightLED(1, 22);
+		}
+		else if (i==0)
+		{
+			closeLED(1, 22);
+		}
+	}
+}
+
+void part16()
+{
+	int LEDs = (1<<19)|(1<<20)|(1<<21)|(1<<22)|(1<<27)|(1<<28)|(1<<29)|(1<<30);
+	
+	// Light all leds
+	AVR32_GPIO.port[1].ovrc = LEDs;	
+}
+
+void part21()
 {
 	unsigned int pin;
 	unsigned int LEDs[] = {59, 60, 61, 62, 51, 52, 53, 54};
@@ -13,7 +176,7 @@ void part1()
 	
 }
 
-void part2()
+void part22()
 {
 	unsigned int LEDPin = 59;
 	unsigned int buttonPin = 88;
@@ -38,7 +201,7 @@ void part2()
 	
 }
 
-void part3()
+void part23()
 {
 	unsigned int green = 51;
 	unsigned int red = 52;
@@ -85,7 +248,7 @@ void part3()
 	
 }
 
-void part4()
+void part24()
 {
 	/*
 	left = PA25 = GPIO25
@@ -190,14 +353,38 @@ void part31()
 	
 }
 
+void part41()
+{
+	// ADC 10 bit
+	//adc_configure(&AVR32_ADC);
+	adc_enable(&AVR32_ADC, ADC_LIGHT_CHANNEL);
+	
+	while(1){
+		adc_start(&AVR32_ADC);
+		int read = adc_get_value(&AVR32_ADC, ADC_LIGHT_CHANNEL);
+		if(read > 400){
+			LED_Display(1);
+		}
+		else{
+			LED_Off(1);
+		}
+	}
+}
+
 
 
 int main (void)
 {
 	board_init();
-	//part1();
-	//part2();
-	//part3();
-	//part4();
-	part31();
+	//part11();
+	//part12();
+	//part13();
+	//part14();
+	//part15();
+	//part21();
+	//part22();
+	//part23();
+	//part24();
+	//part31();
+	part41();
 }

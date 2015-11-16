@@ -1,11 +1,5 @@
 src/main.d src/main.o src/main.o: ../src/main.c ../src/asf.h \
- ../src/ASF/avr32/utils/compiler.h \
- ../src/ASF/avr32/utils/preprocessor/preprocessor.h \
- ../src/ASF/avr32/utils/preprocessor/tpaste.h \
- ../src/ASF/avr32/utils/preprocessor/stringz.h \
- ../src/ASF/avr32/utils/preprocessor/mrepeat.h \
- ../src/ASF/avr32/utils/preprocessor/preprocessor.h \
- ../src/ASF/common/utils/parts.h \
+ ../src/ASF/avr32/drivers/adc/adc.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/io.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/uc3a0512.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/core_sc0_140.h \
@@ -33,6 +27,13 @@ src/main.d src/main.o src/main.o: ../src/main.c ../src/asf.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/usart_400.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/usbb_311.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/wdt_231.h \
+ ../src/ASF/avr32/utils/compiler.h \
+ ../src/ASF/avr32/utils/preprocessor/preprocessor.h \
+ ../src/ASF/avr32/utils/preprocessor/tpaste.h \
+ ../src/ASF/avr32/utils/preprocessor/stringz.h \
+ ../src/ASF/avr32/utils/preprocessor/mrepeat.h \
+ ../src/ASF/avr32/utils/preprocessor/preprocessor.h \
+ ../src/ASF/common/utils/parts.h \
  ../src/ASF/avr32/utils/header_files/uc3d_defines_fix.h \
  ../src/ASF/avr32/utils/header_files/uc3l3_l4_defines_fix.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/include/stddef.h \
@@ -64,19 +65,7 @@ src/main.d src/main.o src/main.o: ../src/main.c ../src/asf.h \
 
 ../src/asf.h:
 
-../src/ASF/avr32/utils/compiler.h:
-
-../src/ASF/avr32/utils/preprocessor/preprocessor.h:
-
-../src/ASF/avr32/utils/preprocessor/tpaste.h:
-
-../src/ASF/avr32/utils/preprocessor/stringz.h:
-
-../src/ASF/avr32/utils/preprocessor/mrepeat.h:
-
-../src/ASF/avr32/utils/preprocessor/preprocessor.h:
-
-../src/ASF/common/utils/parts.h:
+../src/ASF/avr32/drivers/adc/adc.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/io.h:
 
@@ -131,6 +120,20 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/usbb_311.h:
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32-gnu-toolchain\bin\../lib/gcc/avr32/4.4.7/../../../../avr32/include/avr32/wdt_231.h:
+
+../src/ASF/avr32/utils/compiler.h:
+
+../src/ASF/avr32/utils/preprocessor/preprocessor.h:
+
+../src/ASF/avr32/utils/preprocessor/tpaste.h:
+
+../src/ASF/avr32/utils/preprocessor/stringz.h:
+
+../src/ASF/avr32/utils/preprocessor/mrepeat.h:
+
+../src/ASF/avr32/utils/preprocessor/preprocessor.h:
+
+../src/ASF/common/utils/parts.h:
 
 ../src/ASF/avr32/utils/header_files/uc3d_defines_fix.h:
 

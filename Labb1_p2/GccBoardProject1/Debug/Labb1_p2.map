@@ -9,8 +9,6 @@ Discarded input sections
  .bss           0x00000000        0x0 src/ASF/avr32/boards/evk1100/led.o
  .text.LED_Read_Display
                 0x00000000        0xc src/ASF/avr32/boards/evk1100/led.o
- .text.LED_Display
-                0x00000000       0x54 src/ASF/avr32/boards/evk1100/led.o
  .text.LED_Read_Display_Mask
                 0x00000000        0xc src/ASF/avr32/boards/evk1100/led.o
  .text.LED_Test
@@ -23,13 +21,29 @@ Discarded input sections
                 0x00000000       0x18 src/ASF/avr32/boards/evk1100/led.o
  .text.LED_Toggle
                 0x00000000       0x50 src/ASF/avr32/boards/evk1100/led.o
+ .text.LED_On   0x00000000       0x50 src/ASF/avr32/boards/evk1100/led.o
  .text.LED_Display_Mask
                 0x00000000       0x74 src/ASF/avr32/boards/evk1100/led.o
  .text.LED_Display_Field
                 0x00000000       0x18 src/ASF/avr32/boards/evk1100/led.o
+ .text          0x00000000        0x0 src/ASF/avr32/drivers/adc/adc.o
+ .data          0x00000000        0x0 src/ASF/avr32/drivers/adc/adc.o
+ .bss           0x00000000        0x0 src/ASF/avr32/drivers/adc/adc.o
+ .text.adc_configure
+                0x00000000       0x12 src/ASF/avr32/drivers/adc/adc.o
+ .text.adc_get_status
+                0x00000000       0x10 src/ASF/avr32/drivers/adc/adc.o
+ .text.adc_disable
+                0x00000000       0x28 src/ASF/avr32/drivers/adc/adc.o
+ .text.adc_check_ovr
+                0x00000000       0x12 src/ASF/avr32/drivers/adc/adc.o
+ .text.adc_get_latest_value
+                0x00000000        0xc src/ASF/avr32/drivers/adc/adc.o
  .text          0x00000000        0x0 src/ASF/avr32/drivers/gpio/gpio.o
  .data          0x00000000        0x0 src/ASF/avr32/drivers/gpio/gpio.o
  .bss           0x00000000        0x0 src/ASF/avr32/drivers/gpio/gpio.o
+ .text.gpio_enable_gpio_pin
+                0x00000000       0x18 src/ASF/avr32/drivers/gpio/gpio.o
  .text.gpio_enable_gpio
                 0x00000000       0x28 src/ASF/avr32/drivers/gpio/gpio.o
  .text.gpio_enable_pin_pull_up
@@ -38,6 +52,8 @@ Discarded input sections
                 0x00000000       0x16 src/ASF/avr32/drivers/gpio/gpio.o
  .text.gpio_configure_group
                 0x00000000       0x6e src/ASF/avr32/drivers/gpio/gpio.o
+ .text.gpio_get_pin_value
+                0x00000000       0x16 src/ASF/avr32/drivers/gpio/gpio.o
  .text.gpio_get_gpio_pin_output_value
                 0x00000000       0x16 src/ASF/avr32/drivers/gpio/gpio.o
  .text.gpio_get_gpio_open_drain_pin_output_value
@@ -99,13 +115,31 @@ Discarded input sections
  .text          0x00000000        0x0 src/main.o
  .data          0x00000000        0x0 src/main.o
  .bss           0x00000000        0x0 src/main.o
- .text.part1    0x00000000       0x54 src/main.o
- .text.part4    0x00000000       0xd0 src/main.o
- .text.part3    0x00000000       0x74 src/main.o
- .text.part2    0x00000000       0x40 src/main.o
- .rodata.C.47.10636
+ .text.initLED  0x00000000       0x1e src/main.o
+ .text.lightLED
                 0x00000000       0x10 src/main.o
- .rodata.C.44.10586
+ .text.closeLED
+                0x00000000       0x10 src/main.o
+ .text.part11   0x00000000       0x4c src/main.o
+ .text.part12   0x00000000       0x38 src/main.o
+ .text.part15   0x00000000       0x40 src/main.o
+ .text.part16   0x00000000        0xe src/main.o
+ .text.part31   0x00000000       0x5c src/main.o
+ .text.part21   0x00000000       0x54 src/main.o
+ .text.part24   0x00000000       0xd0 src/main.o
+ .text.part23   0x00000000       0x74 src/main.o
+ .text.part22   0x00000000       0x40 src/main.o
+ .text.part14   0x00000000       0x88 src/main.o
+ .text.part13   0x00000000       0x80 src/main.o
+ .text.interrupt
+                0x00000000       0x34 src/main.o
+ .data.vol_state
+                0x00000000        0x4 src/main.o
+ .rodata.C.49.10644
+                0x00000000       0x20 src/main.o
+ .rodata.C.60.10764
+                0x00000000       0x10 src/main.o
+ .rodata.C.57.10714
                 0x00000000       0x20 src/main.o
 
 Memory Configuration
@@ -121,6 +155,7 @@ Linker script and memory map
                 0x00001000                _stack_size = 0x1000
 LOAD src/ASF/avr32/boards/evk1100/init.o
 LOAD src/ASF/avr32/boards/evk1100/led.o
+LOAD src/ASF/avr32/drivers/adc/adc.o
 LOAD src/ASF/avr32/drivers/gpio/gpio.o
 LOAD src/ASF/avr32/drivers/intc/exception.o
 LOAD src/ASF/avr32/drivers/intc/intc.o
@@ -253,42 +288,48 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
 .plt
  *(.plt)
 
-.text           0x80002008      0x3c4
+.text           0x80002008      0x3d4
  *(.text .stub .text.* .gnu.linkonce.t.*)
  .text.board_init
                 0x80002008       0xd0 src/ASF/avr32/boards/evk1100/init.o
                 0x80002008                board_init
- .text.LED_On   0x800020d8       0x50 src/ASF/avr32/boards/evk1100/led.o
-                0x800020d8                LED_On
- .text.LED_Off  0x80002128       0x54 src/ASF/avr32/boards/evk1100/led.o
-                0x80002128                LED_Off
+ .text.LED_Display
+                0x800020d8       0x54 src/ASF/avr32/boards/evk1100/led.o
+                0x800020d8                LED_Display
+ .text.LED_Off  0x8000212c       0x54 src/ASF/avr32/boards/evk1100/led.o
+                0x8000212c                LED_Off
+ .text.adc_start
+                0x80002180        0x6 src/ASF/avr32/drivers/adc/adc.o
+                0x80002180                adc_start
+ .text.adc_enable
+                0x80002186        0xa src/ASF/avr32/drivers/adc/adc.o
+                0x80002186                adc_enable
+ .text.adc_check_eoc
+                0x80002190       0x10 src/ASF/avr32/drivers/adc/adc.o
+                0x80002190                adc_check_eoc
+ .text.adc_get_value
+                0x800021a0       0x28 src/ASF/avr32/drivers/adc/adc.o
+                0x800021a0                adc_get_value
  .text.gpio_enable_module_pin
-                0x8000217c       0x52 src/ASF/avr32/drivers/gpio/gpio.o
-                0x8000217c                gpio_enable_module_pin
- *fill*         0x800021ce        0x2 d703d703
+                0x800021c8       0x52 src/ASF/avr32/drivers/gpio/gpio.o
+                0x800021c8                gpio_enable_module_pin
+ *fill*         0x8000221a        0x2 d703d703
  .text.gpio_enable_module
-                0x800021d0       0x30 src/ASF/avr32/drivers/gpio/gpio.o
-                0x800021d0                gpio_enable_module
- .text.gpio_enable_gpio_pin
-                0x80002200       0x18 src/ASF/avr32/drivers/gpio/gpio.o
-                0x80002200                gpio_enable_gpio_pin
+                0x8000221c       0x30 src/ASF/avr32/drivers/gpio/gpio.o
+                0x8000221c                gpio_enable_module
  .text.gpio_configure_pin
-                0x80002218       0xb8 src/ASF/avr32/drivers/gpio/gpio.o
-                0x80002218                gpio_configure_pin
- .text.gpio_get_pin_value
-                0x800022d0       0x16 src/ASF/avr32/drivers/gpio/gpio.o
-                0x800022d0                gpio_get_pin_value
- *fill*         0x800022e6        0x2 d703d703
+                0x8000224c       0xb8 src/ASF/avr32/drivers/gpio/gpio.o
+                0x8000224c                gpio_configure_pin
  .text._get_interrupt_handler
-                0x800022e8       0x38 src/ASF/avr32/drivers/intc/intc.o
-                0x800022e8                _get_interrupt_handler
- .text._stext   0x80002320       0x3c src/ASF/avr32/utils/startup/startup_uc3.o
+                0x80002304       0x38 src/ASF/avr32/drivers/intc/intc.o
+                0x80002304                _get_interrupt_handler
+ .text._stext   0x8000233c       0x3c src/ASF/avr32/utils/startup/startup_uc3.o
                                  0x50 (size before relaxing)
-                0x80002320                _stext
- .text.part31   0x8000235c       0x5c src/main.o
-                0x8000235c                part31
- .text.main     0x800023b8       0x14 src/main.o
-                0x800023b8                main
+                0x8000233c                _stext
+ .text.part41   0x80002378       0x50 src/main.o
+                0x80002378                part41
+ .text.main     0x800023c8       0x14 src/main.o
+                0x800023c8                main
  *(.text.*personality*)
  *(.gnu.warning)
 
@@ -503,6 +544,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  .comment       0x00000000       0x30 src/ASF/avr32/boards/evk1100/init.o
                                  0x31 (size before relaxing)
  .comment       0x00000000       0x31 src/ASF/avr32/boards/evk1100/led.o
+ .comment       0x00000000       0x31 src/ASF/avr32/drivers/adc/adc.o
  .comment       0x00000000       0x31 src/ASF/avr32/drivers/gpio/gpio.o
  .comment       0x00000000       0x31 src/ASF/avr32/drivers/intc/intc.o
  .comment       0x00000000       0x31 src/main.o
@@ -519,113 +561,126 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x280
+.debug_aranges  0x00000000      0x338
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 src/ASF/avr32/boards/evk1100/init.o
  .debug_aranges
                 0x00000020       0x78 src/ASF/avr32/boards/evk1100/led.o
  .debug_aranges
-                0x00000098      0x100 src/ASF/avr32/drivers/gpio/gpio.o
+                0x00000098       0x60 src/ASF/avr32/drivers/adc/adc.o
  .debug_aranges
-                0x00000198       0x20 src/ASF/avr32/drivers/intc/exception.o
+                0x000000f8      0x100 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_aranges
-                0x000001b8       0x38 src/ASF/avr32/drivers/intc/intc.o
+                0x000001f8       0x20 src/ASF/avr32/drivers/intc/exception.o
  .debug_aranges
-                0x000001f0       0x28 src/ASF/avr32/utils/startup/startup_uc3.o
+                0x00000218       0x38 src/ASF/avr32/drivers/intc/intc.o
  .debug_aranges
-                0x00000218       0x20 src/ASF/avr32/utils/startup/trampoline_uc3.o
+                0x00000250       0x28 src/ASF/avr32/utils/startup/startup_uc3.o
  .debug_aranges
-                0x00000238       0x48 src/main.o
+                0x00000278       0x20 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_aranges
+                0x00000298       0xa0 src/main.o
 
 .debug_pubnames
-                0x00000000      0x4f7
+                0x00000000      0x62f
  *(.debug_pubnames)
  .debug_pubnames
                 0x00000000       0x21 src/ASF/avr32/boards/evk1100/init.o
  .debug_pubnames
                 0x00000021       0xf6 src/ASF/avr32/boards/evk1100/led.o
  .debug_pubnames
-                0x00000117      0x330 src/ASF/avr32/drivers/gpio/gpio.o
+                0x00000117       0xb3 src/ASF/avr32/drivers/adc/adc.o
  .debug_pubnames
-                0x00000447       0x62 src/ASF/avr32/drivers/intc/intc.o
+                0x000001ca      0x330 src/ASF/avr32/drivers/gpio/gpio.o
  .debug_pubnames
-                0x000004a9       0x4e src/main.o
+                0x000004fa       0x62 src/ASF/avr32/drivers/intc/intc.o
+ .debug_pubnames
+                0x0000055c       0xd3 src/main.o
 
-.debug_info     0x00000000     0x25e5
+.debug_info     0x00000000     0x498c
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x16b src/ASF/avr32/boards/evk1100/init.o
  .debug_info    0x0000016b      0xf01 src/ASF/avr32/boards/evk1100/led.o
- .debug_info    0x0000106c      0xb1b src/ASF/avr32/drivers/gpio/gpio.o
- .debug_info    0x00001b87       0xa5 src/ASF/avr32/drivers/intc/exception.o
- .debug_info    0x00001c2c      0x5b3 src/ASF/avr32/drivers/intc/intc.o
- .debug_info    0x000021df       0xa4 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_info    0x00002283       0xab src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_info    0x0000232e      0x2b7 src/main.o
+ .debug_info    0x0000106c     0x1095 src/ASF/avr32/drivers/adc/adc.o
+ .debug_info    0x00002101      0xb1b src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_info    0x00002c1c       0x9c src/ASF/avr32/drivers/intc/exception.o
+ .debug_info    0x00002cb8      0x5b3 src/ASF/avr32/drivers/intc/intc.o
+ .debug_info    0x0000326b       0x9b src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_info    0x00003306       0xa2 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_info    0x000033a8     0x15e4 src/main.o
 
-.debug_abbrev   0x00000000      0x8d9
+.debug_abbrev   0x00000000      0xc14
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0xae src/ASF/avr32/boards/evk1100/init.o
  .debug_abbrev  0x000000ae      0x286 src/ASF/avr32/boards/evk1100/led.o
- .debug_abbrev  0x00000334      0x28b src/ASF/avr32/drivers/gpio/gpio.o
- .debug_abbrev  0x000005bf       0x14 src/ASF/avr32/drivers/intc/exception.o
- .debug_abbrev  0x000005d3      0x1f2 src/ASF/avr32/drivers/intc/intc.o
- .debug_abbrev  0x000007c5       0x12 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_abbrev  0x000007d7       0x14 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_abbrev  0x000007eb       0xee src/main.o
+ .debug_abbrev  0x00000334      0x193 src/ASF/avr32/drivers/adc/adc.o
+ .debug_abbrev  0x000004c7      0x28b src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_abbrev  0x00000752       0x14 src/ASF/avr32/drivers/intc/exception.o
+ .debug_abbrev  0x00000766      0x1f2 src/ASF/avr32/drivers/intc/intc.o
+ .debug_abbrev  0x00000958       0x12 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_abbrev  0x0000096a       0x14 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_abbrev  0x0000097e      0x296 src/main.o
 
-.debug_line     0x00000000     0x2a07
+.debug_line     0x00000000     0x328c
  *(.debug_line)
  .debug_line    0x00000000      0x764 src/ASF/avr32/boards/evk1100/init.o
  .debug_line    0x00000764      0x808 src/ASF/avr32/boards/evk1100/led.o
- .debug_line    0x00000f6c      0x93a src/ASF/avr32/drivers/gpio/gpio.o
- .debug_line    0x000018a6      0x109 src/ASF/avr32/drivers/intc/exception.o
- .debug_line    0x000019af      0x707 src/ASF/avr32/drivers/intc/intc.o
- .debug_line    0x000020b6       0xf2 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_line    0x000021a8       0x67 src/ASF/avr32/utils/startup/trampoline_uc3.o
- .debug_line    0x0000220f      0x7f8 src/main.o
+ .debug_line    0x00000f6c      0x760 src/ASF/avr32/drivers/adc/adc.o
+ .debug_line    0x000016cc      0x93a src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_line    0x00002006      0x109 src/ASF/avr32/drivers/intc/exception.o
+ .debug_line    0x0000210f      0x707 src/ASF/avr32/drivers/intc/intc.o
+ .debug_line    0x00002816       0xf2 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_line    0x00002908       0x67 src/ASF/avr32/utils/startup/trampoline_uc3.o
+ .debug_line    0x0000296f      0x91d src/main.o
 
-.debug_frame    0x00000000      0x47c
+.debug_frame    0x00000000      0x660
  *(.debug_frame)
  .debug_frame   0x00000000       0x28 src/ASF/avr32/boards/evk1100/init.o
  .debug_frame   0x00000028       0xf8 src/ASF/avr32/boards/evk1100/led.o
- .debug_frame   0x00000120      0x204 src/ASF/avr32/drivers/gpio/gpio.o
- .debug_frame   0x00000324       0x64 src/ASF/avr32/drivers/intc/intc.o
- .debug_frame   0x00000388       0xf4 src/main.o
+ .debug_frame   0x00000120       0xbc src/ASF/avr32/drivers/adc/adc.o
+ .debug_frame   0x000001dc      0x204 src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_frame   0x000003e0       0x64 src/ASF/avr32/drivers/intc/intc.o
+ .debug_frame   0x00000444      0x21c src/main.o
 
-.debug_str      0x00000000      0xc6d
+.debug_str      0x00000000      0xf9a
  *(.debug_str)
- .debug_str     0x00000000      0x15f src/ASF/avr32/boards/evk1100/init.o
-                                0x198 (size before relaxing)
- .debug_str     0x0000015f      0x3c0 src/ASF/avr32/boards/evk1100/led.o
-                                0x4d9 (size before relaxing)
- .debug_str     0x0000051f      0x30b src/ASF/avr32/drivers/gpio/gpio.o
-                                0x541 (size before relaxing)
- .debug_str     0x0000082a      0x383 src/ASF/avr32/drivers/intc/intc.o
-                                0x495 (size before relaxing)
- .debug_str     0x00000bad       0xc0 src/main.o
-                                0x168 (size before relaxing)
+ .debug_str     0x00000000      0x156 src/ASF/avr32/boards/evk1100/init.o
+                                0x18f (size before relaxing)
+ .debug_str     0x00000156      0x3c0 src/ASF/avr32/boards/evk1100/led.o
+                                0x4d0 (size before relaxing)
+ .debug_str     0x00000516      0x316 src/ASF/avr32/drivers/adc/adc.o
+                                0x43c (size before relaxing)
+ .debug_str     0x0000082c      0x304 src/ASF/avr32/drivers/gpio/gpio.o
+                                0x538 (size before relaxing)
+ .debug_str     0x00000b30      0x383 src/ASF/avr32/drivers/intc/intc.o
+                                0x48c (size before relaxing)
+ .debug_str     0x00000eb3       0xe7 src/main.o
+                                0x58d (size before relaxing)
 
-.debug_loc      0x00000000      0x7dc
+.debug_loc      0x00000000      0xa61
  *(.debug_loc)
  .debug_loc     0x00000000       0x1f src/ASF/avr32/boards/evk1100/init.o
  .debug_loc     0x0000001f      0x183 src/ASF/avr32/boards/evk1100/led.o
- .debug_loc     0x000001a2      0x368 src/ASF/avr32/drivers/gpio/gpio.o
- .debug_loc     0x0000050a       0xd3 src/ASF/avr32/drivers/intc/intc.o
- .debug_loc     0x000005dd      0x1ff src/main.o
+ .debug_loc     0x000001a2      0x115 src/ASF/avr32/drivers/adc/adc.o
+ .debug_loc     0x000002b7      0x368 src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_loc     0x0000061f       0xd3 src/ASF/avr32/drivers/intc/intc.o
+ .debug_loc     0x000006f2      0x36f src/main.o
 
-.debug_macinfo  0x00000000   0x49a933
+.debug_macinfo  0x00000000   0x585034
  *(.debug_macinfo)
  .debug_macinfo
                 0x00000000    0xecbaf src/ASF/avr32/boards/evk1100/init.o
  .debug_macinfo
                 0x000ecbaf    0xec162 src/ASF/avr32/boards/evk1100/led.o
  .debug_macinfo
-                0x001d8d11    0xea8bf src/ASF/avr32/drivers/gpio/gpio.o
+                0x001d8d11    0xea6cf src/ASF/avr32/drivers/adc/adc.o
  .debug_macinfo
-                0x002c35d0    0xea96c src/ASF/avr32/drivers/intc/intc.o
+                0x002c33e0    0xea8bf src/ASF/avr32/drivers/gpio/gpio.o
  .debug_macinfo
-                0x003adf3c    0xec9f7 src/main.o
+                0x003adc9f    0xea96c src/ASF/avr32/drivers/intc/intc.o
+ .debug_macinfo
+                0x0049860b    0xeca29 src/main.o
 
 .debug_weaknames
  *(.debug_weaknames)
@@ -653,10 +708,11 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr32 gcc/native/3.4.1057/avr3
  *(.note.GNU-stack)
 OUTPUT(Labb1_p2.elf elf32-avr32)
 
-.debug_ranges   0x00000000      0x240
+.debug_ranges   0x00000000      0x2f0
  .debug_ranges  0x00000000       0x18 src/ASF/avr32/boards/evk1100/init.o
  .debug_ranges  0x00000018       0x70 src/ASF/avr32/boards/evk1100/led.o
- .debug_ranges  0x00000088       0xf8 src/ASF/avr32/drivers/gpio/gpio.o
- .debug_ranges  0x00000180       0x48 src/ASF/avr32/drivers/intc/intc.o
- .debug_ranges  0x000001c8       0x20 src/ASF/avr32/utils/startup/startup_uc3.o
- .debug_ranges  0x000001e8       0x58 src/main.o
+ .debug_ranges  0x00000088       0x58 src/ASF/avr32/drivers/adc/adc.o
+ .debug_ranges  0x000000e0       0xf8 src/ASF/avr32/drivers/gpio/gpio.o
+ .debug_ranges  0x000001d8       0x48 src/ASF/avr32/drivers/intc/intc.o
+ .debug_ranges  0x00000220       0x20 src/ASF/avr32/utils/startup/startup_uc3.o
+ .debug_ranges  0x00000240       0xb0 src/main.o
