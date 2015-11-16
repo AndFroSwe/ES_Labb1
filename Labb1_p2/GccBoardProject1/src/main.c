@@ -1,5 +1,4 @@
 #include <asf.h>
-#include "gpio.h"
 
 void part1()
 {
@@ -148,6 +147,50 @@ void part4()
 	}
 }
 
+void part31()
+{
+	int buttonPin = 88;
+	int buttonVal = 1;
+	int old = 1;
+	int LED = 0x01;
+		
+	gpio_enable_gpio_pin(buttonPin);
+	
+	while (1)
+	{
+		buttonVal = gpio_get_pin_value(buttonPin);
+		
+		if (buttonVal < old)
+		{
+			// With display
+			//LED_Display(LED);
+			// With LED_On/Off
+			LED_On(LED);
+			
+			// Shift led
+			if (LED <= 0x80)
+			{
+				LED = (LED << 1);
+			}
+			else
+			{
+				LED = 0x01;
+				// With LED_On()
+				for (int i = 0; i < 8; ++i)
+				{
+					LED_Off(0x01 << i);
+				}
+			}
+		}
+		old = buttonVal;	
+		
+	}
+	LED_Display(LED0);
+	
+	
+}
+
+
 
 int main (void)
 {
@@ -155,6 +198,6 @@ int main (void)
 	//part1();
 	//part2();
 	//part3();
-	part4();
-	
+	//part4();
+	part31();
 }
