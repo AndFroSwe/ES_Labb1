@@ -61,7 +61,7 @@ src/main.d src/main.o src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/avr32/boards/evk1100/led.h \
  ../src/ASF/avr32/drivers/gpio/gpio.h ../src/ASF/common/boards/board.h \
  ../src/ASF/avr32/boards/evk1100/evk1100.h \
- ../src/ASF/avr32/boards/evk1100/led.h
+ ../src/ASF/avr32/boards/evk1100/led.h ../src/ASF/avr32/drivers/pwm/pwm.h
 
 ../src/asf.h:
 
@@ -192,3 +192,5 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr32\ gcc\native\3.4.1057\avr32
 ../src/ASF/avr32/boards/evk1100/evk1100.h:
 
 ../src/ASF/avr32/boards/evk1100/led.h:
+
+../src/ASF/avr32/drivers/pwm/pwm.h:

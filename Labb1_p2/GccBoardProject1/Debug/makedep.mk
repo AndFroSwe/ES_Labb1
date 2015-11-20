@@ -14,6 +14,8 @@ src\ASF\avr32\drivers\intc\exception.S
 
 src\ASF\avr32\drivers\intc\intc.c
 
+src\ASF\avr32\drivers\pwm\pwm.c
+
 src\ASF\avr32\utils\startup\startup_uc3.S
 
 src\ASF\avr32\utils\startup\trampoline_uc3.S

@@ -1,4 +1,7 @@
 #include <asf.h>
+#define EXAMPLE_PWM_PIN AVR32_PWM_3_PIN
+#define EXAMPLE_PWM_FUNCTION AVR32_PWM_3_FUNCTION
+
 #define switch1 88
 
 volatile int vol_state = 1;
@@ -371,6 +374,31 @@ void part41()
 	}
 }
 
+int PWM_prog(unsigned long freq, unsigned long dutycycle) {
+	/* 0<dutycycle<100 [percent] */
+	unsigned int channel_id = 3;
+	unsigned int mck = 115200;
+	unsigned long period, duty_time;
+	
+	avr32_pwm_channel_t pwm_channel = { .ccnt = 0 }; // One	channel config.
+
+	gpio_enable_module_pin(EXAMPLE_PWM_PIN, EXAMPLE_PWM_FUNCTION);
+	pwm_channel.CMR.cpre = AVR32_PWM_CPRE_MCK_DIV_256; //	Channel prescaler.
+
+	// Calculate period and duty cycle
+	period = (mck/256)/freq;
+	duty_time = period*dutycycle/100;
+	
+	// Add to register
+	pwm_channel.cdty = duty_time; // Channel duty cycle, should be < CPRD.
+	pwm_channel.cprd = period; // Channel period.
+
+	pwm_channel_init(channel_id, &pwm_channel); // Set channel	configuration to channel 3.
+	pwm_start_channels(1 << channel_id); // Start channel 3.
+	while(1){
+	}
+	return 0;
+}
 
 
 int main (void)
@@ -386,5 +414,6 @@ int main (void)
 	//part23();
 	//part24();
 	//part31();
-	part41();
+	//part41();
+	PWM_prog(1, 10);
 }
