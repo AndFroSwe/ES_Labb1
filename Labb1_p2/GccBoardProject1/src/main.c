@@ -251,7 +251,7 @@ void part23()
 	
 }
 
-void part24()
+void part25()
 {
 	/*
 	left = PA25 = GPIO25
@@ -365,16 +365,39 @@ void part41()
 	while(1){
 		adc_start(&AVR32_ADC);
 		int read = adc_get_value(&AVR32_ADC, ADC_LIGHT_CHANNEL);
-		if(read > 400){
-			LED_Display(1);
+		if(read < 100){ //max 1023
+			LED_Display(0xFF);
+		}
+		else if(read < 200){ //max 1023
+			LED_Display(0x7F);
+		}
+		else if(read < 300){ //max 1023
+			LED_Display(0x3F);
+		}
+		else if(read < 400){ //max 1023
+			LED_Display(0x1F);
+		}
+		else if(read < 500){ //max 1023
+			LED_Display(0x0F);
+		}
+		else if(read < 600){ //max 1023
+			LED_Display(0x07);
+		}
+		else if(read < 700){ //max 1023
+			LED_Display(0x03);
+		}
+		else if(read < 800){ //max 1023
+			LED_Display(0x01);
 		}
 		else{
-			LED_Off(1);
+			LED_Display(0x00);
 		}
 	}
 }
 
 int PWM_prog(unsigned long freq, unsigned long dutycycle) {
+	
+	//7 channels for pwm exist
 	/* 0<dutycycle<100 [percent] */
 	unsigned int channel_id = 3;
 	unsigned int mck = 115200;
@@ -409,10 +432,11 @@ int main (void)
 	//part13();
 	//part14();
 	//part15();
+	//part16();
 	//part21();
 	//part22();
 	//part23();
-	//part24();
+	//part25();
 	//part31();
 	//part41();
 	PWM_prog(1, 10);
