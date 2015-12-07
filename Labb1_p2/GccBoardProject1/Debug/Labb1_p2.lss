@@ -894,7 +894,7 @@ int main (void)
 	//part31();
 	part41();
 800023f2:	f0 1f 00 03 	mcall	800023fc <main+0x10>
-	//PWM_prog(1, 10);
+	//PWM_prog(1, 70);
 }
 800023f6:	d8 0a       	popm	pc,r12=0
 800023f8:	80 00       	ld.sh	r0,r0[0x0]

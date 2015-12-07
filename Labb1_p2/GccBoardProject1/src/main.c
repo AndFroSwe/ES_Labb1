@@ -69,7 +69,7 @@ void part12()
 
 void part13()
 {
-//Change state of led with interupt
+//Change state of led with interrupt
 	// Interrupt initiation
 	INTC_init_interrupts();
 	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
@@ -102,7 +102,7 @@ void part13()
 
 void part14()
 {
-//Change state of led with interupt
+//Change state of led with interrupt
 	// Interrupt initiation
 	INTC_init_interrupts();
 	INTC_register_interrupt(&interrupt, (AVR32_GPIO_IRQ_0+88/8), AVR32_INTC_INT0);
@@ -143,7 +143,7 @@ void part15()
 	int i = 0;
 	while(1)
 	{
-		// Read akk buttons
+		// Read all buttons
 		i = ~AVR32_GPIO.port[2].pvr & buttons;
 		
 		
@@ -438,6 +438,6 @@ int main (void)
 	//part23();
 	//part25();
 	//part31();
-	//part41();
-	PWM_prog(1, 10);
+	part41();
+	//PWM_prog(1, 70);
 }
